@@ -35,7 +35,20 @@ public class DoublyLinkedList {
      * @return
      */
     public int get( int index ) {
-        return -1;
+        return getNode(index).value;
+    }
+
+    private Node getNode(int index) {
+        if (index >= size) {
+            throw new IndexOutOfBoundsException(String.format("index: %d is out of bounds for %s of size: %d",
+                    index, getClass().getName(), size));
+        }
+
+        Node current = this.head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current;
     }
 
     /**
@@ -46,11 +59,27 @@ public class DoublyLinkedList {
      */
     public void add( int index, int value ) {
         // Implement, create a new Node for this entry.
-
         Node n = new Node( value );
 
         // Implement the rest
+        if (index == 0) {
+            if (head != null) {
+                n.next = head;
+                head.prev = n;
+            }
+            head = n;
+        } else {
+            Node previous = getNode(index - 1);
 
+            if (previous.next != null) {
+                previous.next.prev = n;
+                n.next = previous.next;
+            }
+
+            previous.next = n;
+            n.prev = previous;
+        }
+        size++;
     }
 
     /**
@@ -60,6 +89,20 @@ public class DoublyLinkedList {
      */
     public void remove( int index ) {
         // Implement, remove the corresponding node from the linked list.
+
+        Node toRemove = getNode(index);
+
+        if (head == toRemove) {
+            head = toRemove.next;
+        }
+
+        if (toRemove.next != null) {
+            toRemove.next.prev = toRemove.prev;
+        }
+
+        if (toRemove.prev != null) {
+            toRemove.prev.next = toRemove.next;
+        }
     }
 
 

@@ -17,7 +17,7 @@ public class DoublyLinkedListTest {
         l.add(2, 300);
         l.add(4, 500);
 
-        String expected = "DoublyLinkedList{size=0} 100 200 300 400 500";
+        String expected = "DoublyLinkedList{size=5} 100 200 300 400 500";
         String actual = l.toString();
         assertEquals(expected, actual);
     }
