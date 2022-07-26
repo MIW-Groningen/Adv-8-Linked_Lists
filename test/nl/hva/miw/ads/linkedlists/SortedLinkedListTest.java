@@ -17,7 +17,7 @@ public class SortedLinkedListTest {
         l.add(500);
         l.add(300);
 
-        String expected = "SortedLinkedList{size=0} 100 200 300 400 500";
+        String expected = "SortedLinkedList{size=5} 100 200 300 400 500";
         String actual = l.toString();
         assertEquals(expected, actual);
     }

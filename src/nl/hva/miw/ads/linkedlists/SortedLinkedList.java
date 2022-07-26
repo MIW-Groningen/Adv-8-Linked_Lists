@@ -3,7 +3,7 @@ package nl.hva.miw.ads.linkedlists;
 /**
  * Sorted linked list.
  *
- * @author michel
+ * @author michel; Vincent Velthuizen
  */
 public class SortedLinkedList {
 
@@ -27,34 +27,52 @@ public class SortedLinkedList {
         return size;
     }
 
-    /**
-     * Return the value in the list at position index.
-     *
-     * @param index
-     * @return
-     */
-    public int get( int index ) {
-        return -1;
+    public Node getNode(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException(index);
+        }
+
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current;
     }
 
-    /**
-     * Add an element to the list. Add it in sorted order.
-     *
-     * @param value
-     */
+    public int get( int index ) {
+        return getNode(index).value;
+    }
+
     public void add( int value ) {
         // Implement, create a new Node for this entry, but keep the list sorted!.
-
         Node n = new Node( value );
 
         // Implement the rest
+
+        if (head == null || head.value > value) {
+            n.next = head;
+            head = n;
+            size++;
+            return;
+        }
+        Node previous = head;
+        while (previous.next != null && previous.next.value < value) {
+            previous = previous.next;
+        }
+
+        if (previous.next == null) {
+            // adding new final element
+            previous.next = n;
+            size++;
+        } else if (previous.next.value > value) {
+            // next value is bigger
+            n.next = previous.next;
+            previous.next = n;
+            size++;
+        }
+        // if value is the same the new node is discarded and the list is not changed
     }
 
-    /**
-     * Remove an elmeent from the list, if it exists, but keep the list sorted.
-     *
-     * @param value
-     */
     public void remove( int value ) {
         // Implement, remove the corresponding node from the linked list.
     }
@@ -62,7 +80,7 @@ public class SortedLinkedList {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append("SortedLinkedList{size=").append(size).append("}");
 
