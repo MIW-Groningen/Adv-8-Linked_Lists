@@ -7,24 +7,37 @@ package nl.hva.miw.ads.linkedlists;
  */
 public class SinglyLinkedList {
 
-    private class Node {
+    private static class Node {
         int value;
-
-        Node next=null;      // Link to next node
+        Node next = null;      // Link to next node
 
         public Node(int value) {
             this.value = value;
         }
     }
 
-    private int size = 0;           // Length of list
-    private Node head = null;      // Link to first node
+    private int size;           // Length of list
+    private Node head;      // Link to first node
 
     public SinglyLinkedList() {
+        this.size = 0;
+        this.head = null;
     }
 
     public int getSize() {
         return size;
+    }
+
+    private Node getNode(int index) {
+        checkIndex(index);
+
+        Node current = head;
+
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+
+        return current;
     }
 
     /**
@@ -34,7 +47,7 @@ public class SinglyLinkedList {
      * @return
      */
     public int get( int index ) {
-        return -1;
+        return getNode(index).value;
     }
 
     /**
@@ -45,19 +58,44 @@ public class SinglyLinkedList {
      */
     public void add( int index, int value ) {
         // Implement, create a new Node for this entry.
-
-        Node n = new Node( value );
+        Node newNode = new Node(value);
 
         // Implement the rest
+        if (index == 0) {
+            newNode.next = head;
+            head = newNode;
+        } else {
+            Node previous = getNode(index - 1);
+            newNode.next = previous.next;
+            previous.next = newNode;
+        }
+
+        size++;
     }
 
     /**
-     * Remove an elmeent from the list at position index, if it exists.
+     * Remove an element from the list at position index, if it exists.
      *
      * @param index
      */
     public void remove( int index ) {
         // Implement, remove the corresponding node from the linked list.
+        checkIndex(index);
+
+        if (index == 0) {
+            head = head.next;
+        } else {
+            Node previous = getNode(index - 1);
+            previous.next = previous.next.next;
+        }
+        size--;
+    }
+
+    private void checkIndex(int index) {
+        if (index >= size || index < 0) {
+            throw new IndexOutOfBoundsException(String.format("Index: %d is out of bounds for List of size: %d",
+                    index, size));
+        }
     }
 
 
