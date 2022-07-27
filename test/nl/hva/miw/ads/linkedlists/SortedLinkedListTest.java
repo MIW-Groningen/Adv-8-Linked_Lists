@@ -10,7 +10,7 @@ public class SortedLinkedListTest {
 
     @Test
     public void add() {
-        SortedLinkedList l = new SortedLinkedList();
+        SortedLinkedList<Integer> l = new SortedLinkedList<>();
 
         l.add(400);
         l.add(100);

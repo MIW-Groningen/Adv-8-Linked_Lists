@@ -5,20 +5,19 @@ package nl.hva.miw.ads.linkedlists;
  *
  * @author michel; Vincent Velthuizen
  */
-public class SortedLinkedList {
+public class SortedLinkedList<T extends Comparable<? super T>> {
 
-    private class Node {
-        int value;
+    private static class Node<T> {
+        T value;
+        Node<T> next = null;      // Link to next node
 
-        Node next=null;      // Link to next node
-
-        public Node(int value) {
+        public Node(T value) {
             this.value = value;
         }
     }
 
     private int size = 0;           // Length of list
-    private Node head = null;      // Link to first node
+    private Node<T> head = null;      // Link to first node
 
     public SortedLinkedList() {
     }
@@ -27,36 +26,36 @@ public class SortedLinkedList {
         return size;
     }
 
-    public Node getNode(int index) {
+    public Node<T> getNode(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException(index);
         }
 
-        Node current = head;
+        Node<T> current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
         return current;
     }
 
-    public int get( int index ) {
+    public T get( int index ) {
         return getNode(index).value;
     }
 
-    public void add( int value ) {
+    public void add( T value ) {
         // Implement, create a new Node for this entry, but keep the list sorted!.
-        Node n = new Node( value );
+        Node<T> n = new Node<>(value);
 
         // Implement the rest
 
-        if (head == null || head.value > value) {
+        if (head == null || head.value.compareTo(value) > 0) {
             n.next = head;
             head = n;
             size++;
             return;
         }
-        Node previous = head;
-        while (previous.next != null && previous.next.value < value) {
+        Node<T> previous = head;
+        while (previous.next != null && previous.next.value.compareTo(value) < 0) {
             previous = previous.next;
         }
 
@@ -64,7 +63,7 @@ public class SortedLinkedList {
             // adding new final element
             previous.next = n;
             size++;
-        } else if (previous.next.value > value) {
+        } else if (previous.next.value.compareTo(value) > 0) {
             // next value is bigger
             n.next = previous.next;
             previous.next = n;
@@ -73,20 +72,20 @@ public class SortedLinkedList {
         // if value is the same the new node is discarded and the list is not changed
     }
 
-    public void remove( int value ) {
+    public void remove( T value ) {
         // Implement, remove the corresponding node from the linked list.
 
-        if (head.value == value) {
+        if (head.value.compareTo(value) == 0) {
             // remove head
             head = head.next;
         }
 
-        Node previous = head;
-        while (previous.next != null && previous.next.value < value) {
+        Node<T> previous = head;
+        while (previous.next != null && previous.next.value.compareTo(value) < 0) {
             previous = previous.next;
         }
 
-        if (previous.next != null && previous.next.value == value) {
+        if (previous.next != null && previous.next.value.compareTo(value) == 0) {
             previous.next = previous.next.next;
             size--;
         }
@@ -99,7 +98,7 @@ public class SortedLinkedList {
 
         sb.append("SortedLinkedList{size=").append(size).append("}");
 
-        Node current = this.head;
+        Node<T> current = this.head;
         while ( current != null ) {
             sb.append(" ");
             sb.append( current.value );
