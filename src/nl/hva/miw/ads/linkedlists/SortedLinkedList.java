@@ -75,6 +75,21 @@ public class SortedLinkedList {
 
     public void remove( int value ) {
         // Implement, remove the corresponding node from the linked list.
+
+        if (head.value == value) {
+            // remove head
+            head = head.next;
+        }
+
+        Node previous = head;
+        while (previous.next != null && previous.next.value < value) {
+            previous = previous.next;
+        }
+
+        if (previous.next != null && previous.next.value == value) {
+            previous.next = previous.next.next;
+            size--;
+        }
     }
 
 
